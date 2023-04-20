@@ -1,5 +1,9 @@
 package org.rainboyan.demo
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
@@ -10,16 +14,20 @@ class AuthorController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond AuthorRepository.list(params), model:[authorCount: AuthorRepository.count()]
+        int size = Math.min(max ?: 10, 100)
+        int page = (params.offset ?: 0) / size
+        Pageable pageable = PageRequest.of(page, size)
+        Page<Author> authorPage = authorRepository.findAll(pageable)
+        respond authorPage.getContent(), model:[authorCount: authorPage.getTotalElements()]
     }
 
     def show(Long id) {
-        respond AuthorRepository.get(id)
+        respond authorRepository.findById(id).get()
     }
 
     def create() {
-        respond new Author(params)
+        Author author = new Author(params)
+        respond author
     }
 
     def save(Author author) {
@@ -29,7 +37,7 @@ class AuthorController {
         }
 
         try {
-            AuthorRepository.save(author)
+            authorRepository.save(author)
         } catch (ValidationException e) {
             respond author.errors, view:'create'
             return
@@ -38,24 +46,25 @@ class AuthorController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'author.label', default: 'Author'), author.id])
-                redirect author
+                redirect action: 'show', id: author.id
             }
             '*' { respond author, [status: CREATED] }
         }
     }
 
     def edit(Long id) {
-        respond AuthorRepository.get(id)
+        respond authorRepository.findById(id).get()
     }
 
-    def update(Author author) {
+    def update(Long id) {
+        Author author = authorRepository.findById(id).get()
         if (author == null) {
             notFound()
             return
         }
 
         try {
-            AuthorRepository.save(author)
+            authorRepository.save(author)
         } catch (ValidationException e) {
             respond author.errors, view:'edit'
             return
@@ -76,7 +85,8 @@ class AuthorController {
             return
         }
 
-        AuthorRepository.delete(id)
+        Optional<Author> author = authorRepository.findById(id)
+        author.ifPresent { authorRepository.delete(it) }
 
         request.withFormat {
             form multipartForm {

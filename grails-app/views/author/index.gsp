@@ -18,8 +18,20 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
-            <f:table collection="${authorList}" />
-
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <g:sortableColumn property="name" title="Name" />
+                    </tr>
+                </thead>
+                <tbody>
+                    <g:each in="${authorList}" var="author" status="i">
+                        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                            <td><g:link method="GET" action="show" id="${author.id}">${author.name}</g:link></td>
+                        </tr>
+                    </g:each>
+                </tbody>
+            </table>
             <div class="pagination">
                 <g:paginate total="${authorCount ?: 0}" />
             </div>

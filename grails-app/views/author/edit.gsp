@@ -27,9 +27,8 @@
             </ul>
             </g:hasErrors>
             <g:form resource="${this.author}" method="PUT">
-                <g:hiddenField name="version" value="${this.author?.version}" />
                 <fieldset class="form">
-                    <f:all bean="author"/>
+                    <g:textField name="name" value="${author.name}" />
                 </fieldset>
                 <fieldset class="buttons">
                     <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />

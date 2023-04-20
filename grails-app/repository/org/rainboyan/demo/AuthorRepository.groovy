@@ -1,16 +1,7 @@
 package org.rainboyan.demo
 
+import org.springframework.data.repository.PagingAndSortingRepository
 
-interface AuthorRepository {
-
-    Author get(Serializable id)
-
-    List<Author> list(Map args)
-
-    Long count()
-
-    void delete(Serializable id)
-
-    Author save(Author author)
+interface AuthorRepository extends PagingAndSortingRepository<Author, Long> {
 
 }
