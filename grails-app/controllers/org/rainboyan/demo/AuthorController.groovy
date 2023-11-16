@@ -46,7 +46,7 @@ class AuthorController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'author.label', default: 'Author'), author.id])
-                redirect action: 'show', id: author.id
+                redirect author
             }
             '*' { respond author, [status: CREATED] }
         }
@@ -64,6 +64,7 @@ class AuthorController {
         }
 
         try {
+            author.name = params.name
             authorRepository.save(author)
         } catch (ValidationException e) {
             respond author.errors, view:'edit'
