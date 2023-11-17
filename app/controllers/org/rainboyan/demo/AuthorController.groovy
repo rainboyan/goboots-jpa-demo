@@ -30,12 +30,8 @@ class AuthorController {
         respond author
     }
 
-    def save(Author author) {
-        if (author == null) {
-            notFound()
-            return
-        }
-
+    def save() {
+        Author author = new Author(params)
         try {
             authorRepository.save(author)
         } catch (ValidationException e) {

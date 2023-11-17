@@ -11,6 +11,8 @@ buildscript {
     }
 }
 
+ext['grails-plugin-hibernate5.version'] = '2022.5.0-SNAPSHOT'
+
 version "0.1"
 group "org.rainboyan.demo"
 
@@ -50,19 +52,19 @@ dependencies {
     implementation "org.grails:grails-plugin-controllers"
     implementation "org.grails:grails-plugin-converters"
     implementation "org.grails:grails-plugin-databinding"
-    // implementation "org.grails:grails-plugin-datasource"
+    implementation "org.grails:grails-plugin-datasource"
     implementation "org.grails:grails-plugin-domain-class"
     implementation "org.grails:grails-plugin-gsp"
     implementation "org.grails:grails-plugin-i18n"
     implementation "org.grails:grails-plugin-interceptors"
     implementation "org.grails:grails-plugin-management"
     implementation "org.grails:grails-plugin-rest"
+    implementation "org.grails:grails-plugin-scaffolding"
     implementation "org.grails:grails-plugin-services"
     implementation "org.grails:grails-plugin-url-mappings"
     implementation "com.h2database:h2"
-    implementation "org.grails.plugins:scaffolding"
     implementation "org.grails.plugins:fields"
-    // implementation "org.grails.plugins:hibernate5"
+    implementation "org.grails.plugins:hibernate5"
     implementation "org.hibernate:hibernate-core:5.6.15.Final"
     profile "org.grails.profiles:web-clean"
     runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
