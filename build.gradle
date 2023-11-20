@@ -11,9 +11,6 @@ buildscript {
     }
 }
 
-ext['grails-gorm.version'] = '2022.5.0-SNAPSHOT'
-ext['grails-gorm-hibernate.version'] = '2022.5.0-SNAPSHOT'
-
 version "0.1"
 group "org.rainboyan.demo"
 
